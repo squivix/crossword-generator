@@ -29,7 +29,12 @@ def test_fill_current_layout(max_num_words, iteration_limit, solved, first_word)
         max_num_words=max_num_words,
     )
 
-    solved_result, final_grid, final_statistics = fill_current_layout(
+    (
+        solved_result,
+        final_grid,
+        final_statistics,
+        partial_fills,
+    ) = fill_current_layout(
         layout_handler=layout_handler,
         word_handler=word_handler,
         iteration_limit=iteration_limit,
@@ -42,3 +47,10 @@ def test_fill_current_layout(max_num_words, iteration_limit, solved, first_word)
 
     # Make sure the first word is the one we expect
     assert first_word_result == first_word
+
+    if solved:
+        assert partial_fills == []
+    else:
+        assert len(partial_fills) > 0
+        best_fill = partial_fills[0]
+        assert 0 < best_fill["fill_percentage"] <= 1
